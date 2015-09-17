@@ -1,0 +1,130 @@
+/*!
+Theme Name: Fix & Make  
+Theme URI: http://www.hotel-hotel.com.au/fixandmake/
+Description: A theme for WordPress.
+Author: Sam Morgan design by U-P
+Author URI: http://www.svmorgan.com
+Version: 1.0
+*/
+
+// https://gist.githubusercontent.com/hcatlin/1027867/raw/013ff52744984f485532472de568bae69d73dc20/reset.scss
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline; }
+
+/* HTML5 display-role reset for older browsers */
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block; }
+
+ol, ul {
+  list-style: none; }
+
+blockquote, q {
+  quotes: none; }
+
+blockquote {
+  &:before, &:after {
+    content: '';
+    content: none; } }
+
+q {
+  &:before, &:after {
+    content: '';
+    content: none; } }
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0; }
+body {
+  font-family: Arial,sans-serif;
+  font-size: 16px;
+  line-height: 1.2em;
+}
+h1,h2,h3,h4 {
+  text-transform: uppercase;
+}
+h1,h2,h3,h4,p {
+  margin: 0 0 1em;
+}
+header {
+  font-size: 32px;
+  line-height: 1.2em;
+  ul {
+    display: flex;
+    justify-content: space-between;
+    padding:2%;
+    li {
+      color: #000;
+      text-transform: uppercase;
+      a {
+        color: #000;
+        text-decoration: none;
+        span {
+          border:2px solid #000;
+          width: 1em;
+          height: 1em;
+          display: inline-block;
+          visibility: hidden;
+          margin: 0 0.5em 0 0;
+          text-align: center;
+          line-height: 1em;
+        }
+      }
+      &.current {
+        a span {
+          visibility: visible;
+        }
+      }
+    }
+  }
+}
+.events {
+  overflow: hidden;
+}
+.events_list {
+  width: 20%;
+  float: left;
+  padding: 0 0 0 2%;
+  box-sizing:border-box;
+  a {
+    text-decoration: none;
+  }
+  li {
+    margin: 0 0 1em;
+  }
+}  
+.events_blocks {
+  width: 80%;
+  float: right;
+  overflow: hidden;
+  .event_block {
+    width: 25%;
+    padding:0 2.5% 0 0;
+    box-sizing:border-box;
+    float: left;
+    .imgwrap {
+      display: block;
+      margin: 0 0 1em;
+    }
+    img {
+      width: 100%;
+      height: auto;
+    }
+    h3 {
+      text-transform: uppercase;
+      margin: 0 0 1em;
+    }
+    table .title {
+      padding: 0 1em 0 0;
+    }
+  }
+}
