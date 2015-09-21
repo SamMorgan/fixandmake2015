@@ -92,10 +92,10 @@
             'order' => 'ASC'        
         ));
 
-        foreach ( $posts as $post ) : setup_postdata( $post ); ?>
+        foreach ( $posts as $post ) : setup_postdata( $post ); 
 
 
-            <div class="event_block">
+            ?><div class="event_block">
              
                 <?php if ( has_post_thumbnail() ) { ?>
                     <a href="<?php the_permalink();?>" class="imgwrap">
@@ -109,7 +109,7 @@
                 <table class="event_details">
                     <?php 
                         $time = get_field('time');
-                        if($when){
+                        if($time){
                             echo '<tr><td class="title">TIME</td><td>'.$time.'</td></tr>';
                         }
 
@@ -128,16 +128,16 @@
                             echo '<tr><td class="title">COST</td><td>'.$cost.'</td></tr>';
                         }                               
 
-                        $book = get_field('more_link');
+                        $book = get_field('book');
                         if($book){
-                             echo '<a href="' . $morelink . '">BOOK</a>';
+                             echo '<a href="' . $book . '">BOOK</a>';
                         }                                       
                     ?>
                 </table>
   
-            </div>
+            </div><?php 
 
-        <?php endforeach; 
+        endforeach; 
         wp_reset_postdata();?>
 
     </section>

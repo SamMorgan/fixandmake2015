@@ -23,20 +23,6 @@
     	  'main_menu' => 'Main Menu',
     	)
 	);
-
-    // Set WordPress theme varibles
-	if ( ! isset( $content_width ) ) {
-		$content_width = 720;
-	}
-	function set_content_width() {
-		global $content_width;
-		if ( is_single() ) {
-			$content_width = 720;		
-		} else {
-			$content_width = 720;
-		}
-	}
-	add_action( 'template_redirect', 'set_content_width' );
     
     // Excerpts for pages
     add_post_type_support( 'page', 'excerpt' );    	
@@ -45,7 +31,18 @@
 
 function enqueue_scripts_styles() {
 
-    wp_enqueue_script( 'js', get_template_directory_uri() . "/js/min/js-min.js", array('jquery'), filemtime( get_stylesheet_directory() . '/js/min/js-min.js' ), true );
+    wp_enqueue_script( 'js', get_template_directory_uri() . "/js/min/js-min.js", array(
+        'jquery',        
+        'jquery-ui-core',
+        'jquery-ui-draggable',
+        'jquery-ui-resizable'
+        ), filemtime( get_stylesheet_directory() . '/js/min/js-min.js' ), true );
+
+    wp_localize_script( 'js', 'sitevars', array(
+        'ajaxurl'   => admin_url( 'admin-ajax.php' ),
+        'nonce'     => wp_create_nonce( 'nonce' )
+        )
+    );    
  
     wp_enqueue_style( 'style', get_template_directory_uri() . "/style.css", array(), filemtime( get_stylesheet_directory() . '/style.css' ) );
 }
@@ -81,51 +78,99 @@ add_action( 'wp_enqueue_scripts', 'enqueue_scripts_styles' );
     }
 
 
-add_action( 'init', 'register_cpt_event' );
+    add_action( 'init', 'register_cpt_event' );
 
-function register_cpt_event() {
+    function register_cpt_event() {
 
-    $labels = array( 
-        'name' => _x( 'Events', 'event' ),
-        'singular_name' => _x( 'Event', 'event' ),
-        'add_new' => _x( 'Add New', 'event' ),
-        'add_new_item' => _x( 'Add New Event', 'event' ),
-        'edit_item' => _x( 'Edit Event', 'event' ),
-        'new_item' => _x( 'New Event', 'event' ),
-        'view_item' => _x( 'View Event', 'event' ),
-        'search_items' => _x( 'Search Events', 'event' ),
-        'not_found' => _x( 'No events found', 'event' ),
-        'not_found_in_trash' => _x( 'No events found in Trash', 'event' ),
-        'parent_item_colon' => _x( 'Parent Event:', 'event' ),
-        'menu_name' => _x( 'Events', 'event' ),
-    );
+        $labels = array( 
+            'name' => _x( 'Events', 'event' ),
+            'singular_name' => _x( 'Event', 'event' ),
+            'add_new' => _x( 'Add New', 'event' ),
+            'add_new_item' => _x( 'Add New Event', 'event' ),
+            'edit_item' => _x( 'Edit Event', 'event' ),
+            'new_item' => _x( 'New Event', 'event' ),
+            'view_item' => _x( 'View Event', 'event' ),
+            'search_items' => _x( 'Search Events', 'event' ),
+            'not_found' => _x( 'No events found', 'event' ),
+            'not_found_in_trash' => _x( 'No events found in Trash', 'event' ),
+            'parent_item_colon' => _x( 'Parent Event:', 'event' ),
+            'menu_name' => _x( 'Events', 'event' ),
+        );
 
-    $args = array( 
-        'labels' => $labels,
-        'hierarchical' => true,
-        
-        'supports' => array( 'title', 'editor', 'excerpt', 'thumbnail' ),
-        //'taxonomies' => array( 'category' ),
-        'public' => true,
-        'show_ui' => true,
-        'show_in_menu' => true,
-        
-        
-        'show_in_nav_menus' => true,
-        'publicly_queryable' => true,
-        'exclude_from_search' => false,
-        'has_archive' => true,
-        'query_var' => true,
-        'can_export' => true,
-        'rewrite' => true,
-        'capability_type' => 'post'
-    );
+        $args = array( 
+            'labels' => $labels,
+            'hierarchical' => true,
+            
+            'supports' => array( 'title', 'editor', 'excerpt', 'thumbnail' ),
+            //'taxonomies' => array( 'category' ),
+            'public' => true,
+            'show_ui' => true,
+            'show_in_menu' => true,
+            
+            
+            'show_in_nav_menus' => true,
+            'publicly_queryable' => true,
+            'exclude_from_search' => false,
+            'has_archive' => true,
+            'query_var' => true,
+            'can_export' => true,
+            'rewrite' => true,
+            'capability_type' => 'post'
+        );
 
-    register_post_type( 'event', $args );
-}
+        register_post_type( 'event', $args );
+    }
 
 
-function new_excerpt_more( $more ) {
-    return '…';
-}
-add_filter( 'excerpt_more', 'new_excerpt_more' );
+    function new_excerpt_more( $more ) {
+        return '…';
+    }
+    add_filter( 'excerpt_more', 'new_excerpt_more' );
+
+
+
+    add_filter( 'acf/fields/wysiwyg/toolbars' , 'my_toolbars'  );
+
+    function my_toolbars( $toolbars ){
+        // Uncomment to view format of $toolbars
+        /*
+        echo '< pre >';
+            print_r($toolbars);
+        echo '< /pre >';
+        die;
+        */
+
+        // Add a new toolbar called "Very Simple"
+        // - this toolbar has only 1 row of buttons
+        $toolbars['Very Simple' ] = array();
+        $toolbars['Very Simple' ][1] = array('link','unlink');
+
+        // Edit the "Full" toolbar and remove 'code'
+        // - delet from array code from http://stackoverflow.com/questions/7225070/php-array-delete-by-value-not-key
+        if( ($key = array_search('code' , $toolbars['Full' ][2])) !== false )
+        {
+            unset( $toolbars['Full' ][2][$key] );
+        }
+
+        // remove the 'Basic' toolbar completely
+        unset( $toolbars['Basic' ] );
+
+        // return $toolbars - IMPORTANT!
+        return $toolbars;
+    }
+
+    // save positioning ajax  
+    function dragdrop_positioning(){    
+        $postid = $_POST['post_id'];
+        $dragdrop_css = $_POST['dragdrop_css'];
+        $dragdrop_css_tablet = $_POST['dragdrop_css_tablet'];
+
+        if($dragdrop_css)
+            update_post_meta($postid, 'dragdrop_css', $dragdrop_css); 
+
+        if($dragdrop_css_tablet)
+            update_post_meta($postid, 'dragdrop_css_tablet', $dragdrop_css_tablet);
+
+        exit;
+    }
+    add_action("wp_ajax_dragdrop_positioning", "dragdrop_positioning");    

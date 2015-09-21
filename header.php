@@ -25,10 +25,10 @@
 	    
 		<ul>
 			<li><h1><a href="<?php bloginfo('url'); ?>"><?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?></a></h1></li>
-			<li <?php if(is_page('events')){ echo 'class="current"';}?>><a href="#"><span>✓</span>EVENTS</a></li>
-			<li><a href="#"><span>✓</span>HOW TO GUIDES</a></li>
-			<li><a href="#"><span>✓</span>STORIES</a></li>
-			<li><a href="#"><span>✓</span>ABOUT</a></li>
+			<li <?php if(is_page('events')){ echo 'class="current"';}?>><a href="<?php echo home_url( '/events/' );?>"><span class="tick">✓</span>EVENTS</a></li>
+			<li><a href="#"><span class="tick">✓</span>HOW TO GUIDES</a></li>
+			<li><a href="#"><span class="tick">✓</span>STORIES</a></li>
+			<li><a href="#"><span class="tick">✓</span>ABOUT</a></li>
 		</ul>	
 	    
 	</header>
