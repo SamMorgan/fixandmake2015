@@ -113,29 +113,23 @@
                         ?>                         
                     </div>
 
-                    <?php 
-                    $who_title = get_field('who_title');
-                    $who_text = get_field('who_text');
-                    $who_image = get_field('who_image'); 
-
-                    if($who_title || $who_text || $who_image){ ?>
+                    <?php if( have_rows('collaborators') ): ?>
                         <div class="who">
-                            <h3>WHO</h3>
-                            <div class="cols2">
-                                
-                                <?php 
-                                    if($who_image){
-                                        echo '<div class="col left">'.wp_get_attachment_image( $who_image, 'medium' ).'</div>';
-                                    }
-                                ?><div class="col right"><?php                               
-                                    if($who_title){ echo '<h3>'.$who_title.'</h3>'; } 
-                                    echo $who_text;
-                                ?>
-                                </div>
-                            </div>    
+                            <h3>WHO</h3>                              
+                            <?php while ( have_rows('collaborators') ) : the_row();?>
+                                <div class="cols2">    
+                                    <div class="col left">
+                                        <?php $image = get_sub_field('image');?>
+                                        <img src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
+                                    </div>
+                                    <div class="col right">                              
+                                        <h3><?php the_sub_field('title');?></h3> 
+                                        <?php the_sub_field('text');?>
+                                    </div>
+                                </div>    
+                            <?php endwhile;?>                                
                         </div>
-                    <?php } ?>    
-
+                    <?php endif;?>
 
                 </div>
                 <div class="right_col">

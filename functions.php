@@ -143,7 +143,7 @@ add_action( 'wp_enqueue_scripts', 'enqueue_scripts_styles' );
         // Add a new toolbar called "Very Simple"
         // - this toolbar has only 1 row of buttons
         $toolbars['Very Simple' ] = array();
-        $toolbars['Very Simple' ][1] = array('link','unlink');
+        $toolbars['Very Simple' ][1] = array('link','unlink','bullist');
 
         // Edit the "Full" toolbar and remove 'code'
         // - delet from array code from http://stackoverflow.com/questions/7225070/php-array-delete-by-value-not-key
@@ -173,4 +173,19 @@ add_action( 'wp_enqueue_scripts', 'enqueue_scripts_styles' );
 
         exit;
     }
-    add_action("wp_ajax_dragdrop_positioning", "dragdrop_positioning");    
+    add_action("wp_ajax_dragdrop_positioning", "dragdrop_positioning"); 
+    
+
+    // /**
+    //  * Get post excerpt by post ID.
+    //  *
+    //  * @return string
+    //  */
+    // function get_post_excerpt_by_id( $post_id ) {
+    //     global $post;
+    //     $post = get_post( $post_id );
+    //     setup_postdata( $post );
+    //     $the_excerpt = get_the_excerpt();
+    //     wp_reset_postdata();
+    //     return $the_excerpt;
+    // }       

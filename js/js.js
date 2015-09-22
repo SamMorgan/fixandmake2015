@@ -1,4 +1,4 @@
-// @codekit-prepend "/lib/jquery.royalslider.min.js";
+// @codekit-prepend "/lib/jquery.vticker.min.js";
 
 jQuery(document).ready(function($){
 
@@ -56,9 +56,13 @@ jQuery(document).ready(function($){
 		}
 	});	
 	var resizing = false;
-	$('.logged-in .dragdrop.img').each(function(){
+	$('.logged-in .dragdrop').each(function(){
+		var aspect_ratio = false;
+		if($(this).hasClass('img')){
+			aspect_ratio = true;
+		}
 		$(this).resizable({
-			aspectRatio: true,
+			aspectRatio: aspect_ratio,
 			handles: 'se',
 			start: function() {	
 				resizing = true;
@@ -174,5 +178,14 @@ jQuery(document).ready(function($){
 			}
 		});
 
+	});
+
+	$(function() {
+	  $('#ticker').vTicker();
+	});	
+
+	$('#hamburger').click(function(){
+		$('body').toggleClass('nav_open');
+		return false;
 	});
 });	

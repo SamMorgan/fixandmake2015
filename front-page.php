@@ -1,6 +1,20 @@
 <?php get_header(); ?>
     
-        <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+
+        <?php if( have_rows('ticker') ): ?>
+        <div class="ticker_wrap">    
+            <div id="ticker">
+                <ul>            
+                    <?php while ( have_rows('ticker') ) : the_row();?>
+
+                        <li><?php the_sub_field('text');?>
+
+                    <?php endwhile;?>
+                </ul>
+            </div>
+        </div>    
+        <?php endif;?>
 
         <?php 
             $css = $post->dragdrop_css;
@@ -12,32 +26,74 @@
 
     <div class="container_wrap">
         <div id="dragdrop_container">
-        <?php 
-            if( have_rows('front_page_contents') ):
-
+            <?php 
                 $i = 1;
-                while ( have_rows('front_page_contents') ) : the_row();
+                $posts = get_field('events');
+
+                if( $posts ): 
+                    foreach( $posts as $post): 
+                            
+                        setup_postdata($post); 
+
+                        $feat_img = wp_get_attachment_image_src( get_post_thumbnail_id(), 'full' );
+                        $padding = 100*($feat_img[2]/$feat_img[1]);?>
+
+                        <div id="dragdrop-item-<?php echo $i;?>" class="dragdrop img">
+                            <?php if(!is_user_logged_in()){ echo '<a href="'.get_permalink().'">'; } ?>                      
+                                <div class="imgwrap" style="padding-bottom:<?php echo $padding;?>%;"><img src="<?php echo $feat_img[0];?>">
+                                    <div class="rollover"><span class="tick">✓</span>
+                                        <time><?php the_field('date');?></time>
+                                        <div class="excerpt"><?php the_excerpt();?></div>
+                                    </div>
+                                </div>
+                            <?php if(!is_user_logged_in()){ echo '</a>'; } ?>                        
+                            <span class="caption"><?php the_title();?></span>                             
+                        </div><?php 
+
+                        $i++;
+                    endforeach; 
+                    wp_reset_postdata();
+                endif;
+
+                
+                if( have_rows('drag_and_drop_elements') ):
+
+                    while ( have_rows('drag_and_drop_elements') ) : the_row();
+
+                        if( get_row_layout() == 'image' ):
+
+                            $img = get_sub_field('image');
+                            $padding = 100*($img['height']/$img['width']);
+                            $link = get_sub_field('link');
+
+                            $html = '<div id="dragdrop-item-'.$i.'" class="dragdrop img">';
+                            if(!is_user_logged_in() && $link ){ $html .= '<a href="'.$link.'">'; } 
+                            $html .= '<div class="imgwrap" style="padding-bottom:'.$padding.'%;"><img src="'.$img['url'].'">';
+                            if(!is_user_logged_in() && $link ){ $html .= '</a>'; }
+                            $html .= '</div>'; 
+
+                            echo $html;
+
+                        elseif( get_row_layout() == 'text' ):
+
+                            echo '<div id="dragdrop-item-'.$i.'" class="dragdrop">';
+                                the_sub_field('text');
+                            echo '</div>';
                         
-                    $img = get_sub_field('image');  
-                    $caption = get_sub_field('caption');
-                    $link = get_sub_field('link');
+                        elseif( get_row_layout() == 'html' ): 
 
-                    $padding = 100*($img['height']/$img['width']);
+                            echo '<div id="dragdrop-item-'.$i.'" class="dragdrop">';
+                                the_sub_field('html');
+                            echo '</div>';                            
 
-                    $html = '<div id="dragdrop-item-'.$i.'" class="dragdrop img">';
-                    if($link && !is_user_logged_in()){ $html .= '<a href="'.$link.'">'; }                        
-                    $html .= '<div class="imgwrap" style="padding-bottom:'.$padding.'%;"><img src="'.$img['url'].'"></div>';
-                    if($link && !is_user_logged_in()){ $html .= '</a>'; }                        
-                    if($caption){ $html .= '<span class="caption">'.$caption.'</span>'; }                              
-                    $html .= '</div>';
+                        endif;
 
-                    echo $html;
-                                                                               
-                $i++;
-                endwhile;
+                        $i++;
 
-            endif;
-        ?>           
+                    endwhile;
+
+                endif;
+            ?>          
         
         </div> 
         <?php if ( is_user_logged_in() ) { ?>
@@ -53,7 +109,8 @@
         <?php } ?>
         
 
-    </div>   
-    <?php endwhile; endif; ?>
+    </div>
+
+<?php endwhile; endif; ?>
         
 <?php get_footer(); ?>
