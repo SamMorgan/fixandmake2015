@@ -93,8 +93,7 @@
                     endwhile;
 
                 endif;
-            ?>          
-        
+            ?>        
         </div> 
         <?php if ( is_user_logged_in() ) { ?>
             <div class="tablet_guide"><span>Resize smaller than the blue lines <br>to set positioning for tablet</span></div>
@@ -108,6 +107,7 @@
             </form>
         <?php } ?>
         
+        <a class="big_button" href="<?php echo home_url('/events/');?>">MORE EVENTS</a>
 
     </div>
 

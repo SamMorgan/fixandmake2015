@@ -1,6 +1,6 @@
 <?php get_header();?>
 <div class="events">
-    <section class="events_list">
+    <section class="events_list sidebar">
     <?php 
     $date = date('Ymd');
 
@@ -108,28 +108,40 @@
                         
                         $book = get_field('book');
                         if($book){
-                             echo '<span class="tick">✓</span> <a href="' . $book . '" class="book_a_spot">BOOK A SPOT</a>';
+                             echo '<p class="book_a_spot"><span class="tick">✓</span> <a href="' . $book . '">BOOK A SPOT</a></p>';
                         }
                         ?>                         
                     </div>
 
-                    <?php if( have_rows('collaborators') ): ?>
+
+                    <?php 
+                    $posts = get_field('collaborators');
+
+                    if( $posts ): ?>
                         <div class="who">
-                            <h3>WHO</h3>                              
-                            <?php while ( have_rows('collaborators') ) : the_row();?>
-                                <div class="cols2">    
-                                    <div class="col left">
-                                        <?php $image = get_sub_field('image');?>
-                                        <img src="<?php echo $image['url']; ?>" alt="<?php echo $image['alt'] ?>" />
-                                    </div>
-                                    <div class="col right">                              
-                                        <h3><?php the_sub_field('title');?></h3> 
-                                        <?php the_sub_field('text');?>
-                                    </div>
-                                </div>    
-                            <?php endwhile;?>                                
+                        <h3>WHO</h3>                     
+                        <?php foreach( $posts as $post) : setup_postdata($post); ?> 
+                            <div class="cols2">    
+                                <div class="col left">
+                                    <?php the_post_thumbnail('full');?>
+                                </div>
+                                <div class="col right">                              
+                                    <h3><?php the_title();?></h3> 
+                                    <?php the_content();?>
+                                </div>
+                            </div>                            
+                        <?php endforeach; 
+                        wp_reset_postdata();?>
                         </div>
                     <?php endif;?>
+
+                    <?php $tickets = get_field('tickets');
+                    if($tickets){ ?>
+                        <div class="tickets">
+                            <h3>Tickets</h3>
+                            <?php echo $tickets;?>
+                        </div>
+                    <?php } ?>                      
 
                 </div>
                 <div class="right_col">
@@ -152,5 +164,5 @@
 
         <?php endwhile; endif; ?>
     </article>
-
+</div>
 <?php get_footer(); ?>

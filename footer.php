@@ -4,15 +4,12 @@
 		    <div>
 				<a href="<?php echo home_url( '/contact/' );?>">CONTACT</a><br>
 				<a href="<?php echo home_url( '/contact/' );?>">PRIVACY</a> 
-			</div>	
-		    <div>
+			</div><div>
 				<a href="#">SOCIAL MEDIA</a><br>
 				<a href="<?php echo home_url( '/faqs/' );?>">FAQS</a> 
-			</div>
-		    <div>
+			</div><div>
 				<a href="#">JOIN THE FAM</a>
-			</div>
-		    <div class="credits">
+			</div><div class="credits">
 				<span>SUPPORTED BY <br>ACT GOVERNMENT</span>
 				<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 					 width="109.701px" height="40.669px" viewBox="0 0 109.701 40.669" enable-background="new 0 0 109.701 40.669"

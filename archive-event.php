@@ -1,6 +1,6 @@
 <?php get_header();?>
 <div class="events">
-    <section class="events_list">
+    <section class="events_list sidebar">
     <?php 
     $date = date('Ymd');
 
@@ -126,15 +126,17 @@
                         $cost = get_field('cost');
                         if($cost){
                             echo '<tr><td class="title">COST</td><td>'.$cost.'</td></tr>';
-                        }                               
-
-                        $book = get_field('book');
-                        if($book){
-                             echo '<a href="' . $book . '">BOOK</a>';
-                        }                                       
+                        }                                                                     
                     ?>
                 </table>
-  
+
+                <?php 
+                    $book = get_field('book');
+                    if($book){
+                         echo '<p><a class="book_a_spot" href="' . $book . '">BOOK</a></p>';
+                    }
+                ?>       
+
             </div><?php 
 
         endforeach; 

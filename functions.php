@@ -20,7 +20,7 @@
     // Turn on menus
     register_nav_menus(
     	array(
-    	  'main_menu' => 'Main Menu',
+    	  'sidebar' => 'sidebar',
     	)
 	);
     
@@ -114,13 +114,56 @@ add_action( 'wp_enqueue_scripts', 'enqueue_scripts_styles' );
             'has_archive' => true,
             'query_var' => true,
             'can_export' => true,
-            'rewrite' => true,
+            'rewrite' => array( 'slug' => 'events' ),
             'capability_type' => 'post'
         );
 
         register_post_type( 'event', $args );
     }
 
+
+    add_action( 'init', 'register_cpt_collaborator' );
+
+    function register_cpt_collaborator() {
+
+        $labels = array( 
+            'name' => _x( 'Collaborators', 'collaborator' ),
+            'singular_name' => _x( 'Collaborator', 'collaborator' ),
+            'add_new' => _x( 'Add New', 'collaborator' ),
+            'add_new_item' => _x( 'Add New Collaborator', 'collaborator' ),
+            'edit_item' => _x( 'Edit Collaborator', 'collaborator' ),
+            'new_item' => _x( 'New Collaborator', 'collaborator' ),
+            'view_item' => _x( 'View Collaborator', 'collaborator' ),
+            'search_items' => _x( 'Search Collaborators', 'collaborator' ),
+            'not_found' => _x( 'No collaborators found', 'collaborator' ),
+            'not_found_in_trash' => _x( 'No collaborators found in Trash', 'collaborator' ),
+            'parent_item_colon' => _x( 'Parent Collaborator:', 'collaborator' ),
+            'menu_name' => _x( 'Collaborators', 'collaborator' ),
+        );
+
+        $args = array( 
+            'labels' => $labels,
+            'hierarchical' => true,
+            
+            'supports' => array( 'title', 'editor', 'thumbnail' ),
+            
+            'public' => true,
+            'show_ui' => true,
+            'show_in_menu' => true,
+            
+            
+            'show_in_nav_menus' => true,
+            'publicly_queryable' => true,
+            'exclude_from_search' => false,
+            'has_archive' => true,
+            'query_var' => true,
+            'can_export' => true,
+            'rewrite' => array( 'slug' => 'collaborators' ),
+            'capability_type' => 'post'
+        );
+
+        register_post_type( 'collaborator', $args );
+    }
 
     function new_excerpt_more( $more ) {
         return '…';
@@ -175,6 +218,7 @@ add_action( 'wp_enqueue_scripts', 'enqueue_scripts_styles' );
     }
     add_action("wp_ajax_dragdrop_positioning", "dragdrop_positioning"); 
     
+
 
     // /**
     //  * Get post excerpt by post ID.

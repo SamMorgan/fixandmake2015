@@ -1,22 +1,30 @@
-<?php
-	switch (true) {
-	    case is_page('our-work'):
-	        get_template_part('template-work-grid');
-	        break;
-	        
-	    case is_tree(5) and has_children($post->ID):
-	    	// Is in our work, and has kids, redirect to first child page.
-			$pagekids = get_pages("child_of=".$post->ID."&sort_column=menu_order");
-	        $firstchild = $pagekids[0];
-	        if( $firstchild ) {
-	            wp_redirect(get_permalink($firstchild->ID), 301);        
-	            exit;
-	        }	
-	        break;	        
-	
-	    default:
-	        get_template_part('index');
-	        break;	        
-	}
+<?php get_header(); ?>
+<section class="page_wrapper">
+	<nav class="sidebar">
+		<h4>MORE INFORMATION</h4>
+		<?php 
+			$mainMenu = array(
+			    'container'         => 'false',
+			    'menu'              => 'sidebar',
+			    'menu_class'        => 'sidebar_menu'
+			);
+			wp_nav_menu($mainMenu); 
+	    ?>
+    </nav>
 
-?>
+    <article class="page_contents">
+        <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
+           
+            <h1><?php the_title();?></h1>
+            <?php 
+	            if ( has_post_thumbnail() ) { 
+	                the_post_thumbnail('full');
+	            }            
+	            
+	            the_content(); 
+            ?>
+        
+        <?php endwhile; endif; ?>
+    </article>
+</section>        
+<?php get_footer(); ?>
