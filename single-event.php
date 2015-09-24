@@ -80,13 +80,13 @@
                             // if($time){
                             //     echo '<tr><td class="title">TIME</td><td>'.$time.'</td></tr>';
                             // }
-                            if( have_rows('times') ):
+                            if( have_rows('times') ){
                                 echo '<tr><td class="title">TIME</td><td>';
-                                while ( have_rows('times') ) : the_row();
+                                    while ( have_rows('times') ) : the_row();
                                         echo get_sub_field('time').'<br>';
-                                endwhile;
+                                    endwhile;
                                 echo '</td></tr>';
-                            endif;
+                            }
 
                             $date = get_field('date');
                             if($date){
