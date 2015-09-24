@@ -35,7 +35,6 @@ jQuery(document).ready(function($){
 	}
 
 	function adjustHeight(){
-		// replacing $container.css('height','auto').height($container[0].scrollHeight); //
 		var newHeight = 0;
 		$('.dragdrop').each(function(){
 			var h = $(this).height() + $(this).offset().top;
@@ -44,6 +43,7 @@ jQuery(document).ready(function($){
 			}
 		});
 		$container.height(newHeight);
+		$('.container_wrap').addClass('ready');
 	}
 
 	// drag function //
@@ -188,4 +188,16 @@ jQuery(document).ready(function($){
 		$('body').toggleClass('nav_open');
 		return false;
 	});
+
+	// open external links in new window //
+	$('a').each(function() {
+	   var a = new RegExp('/' + window.location.host + '/');
+	   if(!a.test(this.href)) {
+	       $(this).click(function(event) {
+	           event.preventDefault();
+	           event.stopPropagation();
+	           window.open(this.href, '_blank');
+	       });
+	   }
+	});	
 });	

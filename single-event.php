@@ -1,71 +1,18 @@
 <?php get_header();?>
 <div class="events">
-    <section class="events_list sidebar">
     <?php 
-    $date = date('Ymd');
-
-        $upcoming_events = get_posts(array(
-            'numberposts'   => -1,
-            'post_type'     => 'event',
-            'fields'        => 'ids',
-            'meta_query'    => array(
-                //'relation'      => 'AND',
-                array(
-                    'key'       => 'date',
-                    'compare'   => '>=',
-                    'value'     => $date,
-                ),
-            ),
-            'orderby' => 'meta_value',
-            'order' => 'ASC'        
-        ));
-        if($upcoming_events) : ?>
-            <h4>UPCOMING EVENTS</h4>
-            <ul>
-                <?php 
-                foreach ( $upcoming_events as $upcoming_event ) : ?>
-                    <li <?php if($upcoming_event == $post->ID){ echo 'class="current"'; }?>>
-                        <span><?php 
-                            the_field('date',$upcoming_event);
-
-                            $event_type = get_field('event_type',$upcoming_event);
-                            if($event_type){
-                                echo ' ('.$event_type.')';
-                            }
-                        ?></span>    
-                        <br>
-                        <a href="<?php echo get_permalink($upcoming_event);?>"><?php echo get_the_title($upcoming_event);?></a>
-                    </li>
-                <?php endforeach;?> 
-            </ul>
-        <?php endif;
-
-        $past_events = get_posts(array(
-            'numberposts'   => -1,
-            'post_type'     => 'event',
-            'fields'        => 'ids',
-            'meta_query'    => array(
-                //'relation'      => 'AND',
-                array(
-                    'key'       => 'date',
-                    'compare'   => '<=',
-                    'value'     => $date,
-                ),
-            ),
-            'orderby' => 'meta_value',
-            'order' => 'ASC'        
-        ));
-    ?>           
-    </section>
-    <article class="event_wrap">    
+        $date = date('Ymd');
+        include 'includes/events-sidebar.php';
+    
+    ?><article class="event_wrap article_content">    
         <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
             <div class="event_title"><?php 
+                the_field('date');
                 $event_type = get_field('event_type');
                 if($event_type){
-                    echo $event_type.', ';
-                }
-                the_field('date');
+                    echo '('.$event_type.') ';
+                }                
                 ?>
                 <h1><?php the_title();?></h1>
             </div>           
@@ -76,10 +23,6 @@
                 <div class="main_col">
                     <table class="event_details">
                         <?php 
-                            // $time = get_field('time');
-                            // if($time){
-                            //     echo '<tr><td class="title">TIME</td><td>'.$time.'</td></tr>';
-                            // }
                             if( have_rows('times') ){
                                 echo '<tr><td class="title">TIME</td><td>';
                                     while ( have_rows('times') ) : the_row();
@@ -103,10 +46,10 @@
                                 echo '<tr><td class="title">COST</td><td>'.$cost.'</td></tr>';
                             }                               
 
-                            $book = get_field('more_link');
-                            if($book){
-                                 echo '<a href="' . $morelink . '">BOOK</a>';
-                            }                                       
+                            // $book = get_field('book');
+                            // if($book){
+                            //      echo '<a href="' . $book . '">BOOK</a>';
+                            // }                                       
                         ?>
                     </table>
 
@@ -115,7 +58,7 @@
                         
                         $book = get_field('book');
                         if($book){
-                             echo '<p class="book_a_spot"><span class="tick">✓</span> <a href="' . $book . '">BOOK A SPOT</a></p>';
+                             echo '<p class="book"><span class="tick">✓</span> <a href="' . $book . '">BOOK A SPOT</a></p>';
                         }
                         ?>                         
                     </div>
@@ -126,7 +69,7 @@
 
                     if( $posts ): ?>
                         <div class="who">
-                        <h3>WHO</h3>                     
+                        <h3>Collaborators</h3>                     
                         <?php foreach( $posts as $post) : setup_postdata($post); ?> 
                             <div class="cols2">    
                                 <div class="col left">

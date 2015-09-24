@@ -7,7 +7,7 @@
 	//set_post_thumbnail_size( 600, 400, true ); // Normal post thumbnails
 	//add_image_size( 'banner-thumb', 566, 250, true ); // Small thumbnail size
     add_image_size( 'square-thumb', 256, 256, true ); 
-    add_image_size( 'large_thumb', 580, 425, true ); 	
+    //add_image_size( 'large_thumb', 580, 425, true ); 	
 
 
 /*

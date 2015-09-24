@@ -25,14 +25,14 @@
 	
     <div class="mobile_header"><span class="heading">FIX AND MAKE</span></div>
     <a id="hamburger" href="#"><span></span></a>
-    
+
     <nav>
 		<ul>
 			<li><h1><a href="<?php bloginfo('url'); ?>"><?php echo esc_attr( get_bloginfo( 'name', 'display' ) ); ?></a></h1></li>
 			<li <?php if(is_post_type_archive('event') || is_singular('event')){ echo 'class="current"';}?>><a href="<?php echo home_url( '/events/' );?>"><span class="tick">✓</span>EVENTS</a></li>
 			<li <?php if (is_post_type_archive('collaborator')){ echo 'class="current"';}?>><a href="<?php echo home_url( '/collaborators/' );?>"><span class="tick">✓</span>COLLABORATORS</a></li>
-			<li><a href="#"><span class="tick">✓</span>ABOUT</a></li>
-            <li><a href="#"><span class="tick">✓</span>VISIT</a></li>            
+			<li <?php if(is_page('about')){ echo 'class="current"';}?>><a href="<?php echo home_url( '/about/' );?>"><span class="tick">✓</span>ABOUT</a></li>
+            <li <?php if(is_page('visit')){ echo 'class="current"';}?>><a href="<?php echo home_url( '/visit/' );?>"><span class="tick">✓</span>VISIT</a></li>            
 		</ul>
     </nav>	
 	    

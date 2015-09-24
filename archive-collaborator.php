@@ -6,10 +6,12 @@
 
             ?><article class="col">
                 <h2><?php the_title();?></h2>            
-                <?php 
-                    the_post_thumbnail('full');
-           
-                    the_content();
+ 
+                    <div class="imgwrap thumb">
+                        <?php the_post_thumbnail('full');?>
+                    </div> 
+                               
+                    <?php the_content();
 
                         $events = get_posts(array(
                             'post_type' => 'event',

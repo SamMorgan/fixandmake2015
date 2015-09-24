@@ -2,20 +2,6 @@
     
 <?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
-        <?php if( have_rows('ticker') ): ?>
-        <div class="ticker_wrap">    
-            <div id="ticker">
-                <ul>            
-                    <?php while ( have_rows('ticker') ) : the_row();?>
-
-                        <li><?php the_sub_field('text');?>
-
-                    <?php endwhile;?>
-                </ul>
-            </div>
-        </div>    
-        <?php endif;?>
-
         <?php 
             $css = $post->dragdrop_css;
             echo "<style id='desktopcss' type='text/css'>".$css."</style>";
@@ -36,14 +22,17 @@
                         setup_postdata($post); 
 
                         $feat_img = wp_get_attachment_image_src( get_post_thumbnail_id(), 'full' );
-                        $padding = 100*($feat_img[2]/$feat_img[1]);?>
+                        $padding = 100*($feat_img[2]/$feat_img[1]);                       
+                        ?>
 
                         <div id="dragdrop-item-<?php echo $i;?>" class="dragdrop img">
                             <?php if(!is_user_logged_in()){ echo '<a href="'.get_permalink().'">'; } ?>                      
                                 <div class="imgwrap" style="padding-bottom:<?php echo $padding;?>%;"><img src="<?php echo $feat_img[0];?>">
                                     <div class="rollover"><span class="tick">✓</span>
-                                        <time><?php the_field('date');?></time>
-                                        <div class="excerpt"><?php the_excerpt();?></div>
+                                        <p><time><?php the_field('date');?></time> <span>(<?php the_field('event_type');?></span>)</p>
+                                        <?php if(!get_field('hide_excerpt')){ ?>
+                                            <div class="excerpt"><?php the_excerpt();?></div>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             <?php if(!is_user_logged_in()){ echo '</a>'; } ?>                        
@@ -65,10 +54,22 @@
                             $img = get_sub_field('image');
                             $padding = 100*($img['height']/$img['width']);
                             $link = get_sub_field('link');
-
-                            $html = '<div id="dragdrop-item-'.$i.'" class="dragdrop img">';
+                        
+                            $type =  get_post_mime_type( $img['ID'] );                          
+                            
+                            if (strpos($type,'svg') !== false) {
+                                $class = 'img-svg';
+                            }else{
+                                $class = 'img';
+                            }
+                            
+                            $html = '<div id="dragdrop-item-'.$i.'" class="dragdrop '.$class.'">';
                             if(!is_user_logged_in() && $link ){ $html .= '<a href="'.$link.'">'; } 
-                            $html .= '<div class="imgwrap" style="padding-bottom:'.$padding.'%;"><img src="'.$img['url'].'">';
+                            if($class === 'img-svg'){
+                                $html .= '<img src="'.$img['url'].'">';
+                            }else{
+                                $html .= '<div class="imgwrap" style="padding-bottom:'.$padding.'%;"><img src="'.$img['url'].'"></div>';
+                            }   
                             if(!is_user_logged_in() && $link ){ $html .= '</a>'; }
                             $html .= '</div>'; 
 
@@ -76,7 +77,7 @@
 
                         elseif( get_row_layout() == 'text' ):
 
-                            echo '<div id="dragdrop-item-'.$i.'" class="dragdrop">';
+                            echo '<div id="dragdrop-item-'.$i.'" class="dragdrop text">';
                                 the_sub_field('text');
                             echo '</div>';
                         
@@ -93,8 +94,24 @@
                     endwhile;
 
                 endif;
-            ?>        
+            ?>
+            
+            <?php if( have_rows('ticker') ): ?>
+            <div class="ticker_wrap">    
+                <div id="ticker">
+                    <ul>            
+                        <?php while ( have_rows('ticker') ) : the_row();?>
+    
+                            <li><?php the_sub_field('text');?></li>
+    
+                        <?php endwhile;?>
+                    </ul>
+                </div>
+            </div>    
+            <?php endif;?>
+                                
         </div> 
+        
         <?php if ( is_user_logged_in() ) { ?>
             <div class="tablet_guide"><span>Resize smaller than the blue lines <br>to set positioning for tablet</span></div>
             <form class="dragdrop_positioning" name="dragdrop_positioning" method="post" action="dragdrop_positioning" enctype="multipart/form-data">
@@ -107,7 +124,7 @@
             </form>
         <?php } ?>
         
-        <a class="big_button" href="<?php echo home_url('/events/');?>">MORE EVENTS</a>
+        <div class="big_button"><a href="<?php echo home_url('/events/');?>">MORE EVENTS</a></div>
 
     </div>
 
