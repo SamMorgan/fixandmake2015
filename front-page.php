@@ -12,6 +12,7 @@
 
     <div class="container_wrap">
         <div id="dragdrop_container">
+        
             <?php 
                 $i = 1;
                 $posts = get_field('events');
