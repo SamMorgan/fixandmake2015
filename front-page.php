@@ -9,7 +9,7 @@
             $css_tablet = $post->dragdrop_css_tablet;
             echo "<style id='tabletcss' type='text/css'>@media screen and (max-width: 780px){".$css_tablet."}</style>";
         ?>
-
+    
     <div class="container_wrap">
         <div id="dragdrop_container">
         
@@ -64,7 +64,7 @@
                                 $class = 'img';
                             }
                             
-                            $html = '<div id="dragdrop-item-'.$i.'" class="dragdrop '.$class.'">';
+                            $html = '<div id="dragdrop-item-'.$i.'" class="dragdrop hide_mobile '.$class.'">';
                             if(!is_user_logged_in() && $link ){ $html .= '<a href="'.$link.'">'; } 
                             if($class === 'img-svg'){
                                 $html .= '<img src="'.$img['url'].'">';
@@ -110,7 +110,7 @@
                 </div>
             </div>    
             <?php endif;?>
-                                
+
         </div> 
         
         <?php if ( is_user_logged_in() ) { ?>
@@ -123,12 +123,20 @@
                 <input type="hidden" name="action" value="dragdrop_positioning" />
                 <?php wp_nonce_field( 'new-post' ); ?>
             </form>
-        <?php } ?>
+        <?php }?>
         
         <div class="big_button"><a href="<?php echo home_url('/events/');?>">MORE EVENTS</a></div>
 
     </div>
 
 <?php endwhile; endif; ?>
-        
+
+        <?php if ( !is_user_logged_in() ) { ?>
+            <div id="canvasdiv"></div>
+            <div class="save"><img src="<?php echo get_template_directory_uri();?>/images/save.svg"></div>
+            <div class="saved">Saved your doodle!</div>
+            <div id="pen"><img src="<?php echo get_template_directory_uri();?>/images/e.svg"></div>
+            <div id="iphonepen"><img class="penny" src="<?php echo get_template_directory_uri();?>/images/cursor.png"> <img class="close" src="<?php echo get_template_directory_uri();?>/images/close.png"></div>
+        <?php } ?>
+                
 <?php get_footer(); ?>
